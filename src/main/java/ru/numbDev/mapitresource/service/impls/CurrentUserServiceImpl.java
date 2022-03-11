@@ -1,8 +1,11 @@
 package ru.numbDev.mapitresource.service.impls;
 
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.numbDev.mapitresource.common.ApiException;
@@ -10,20 +13,20 @@ import ru.numbDev.mapitresource.convertor.UserConvertor;
 import ru.numbDev.mapitresource.model.user.UserEntity;
 import ru.numbDev.mapitresource.pojo.Auth;
 import ru.numbDev.mapitresource.pojo.User;
+import ru.numbDev.mapitresource.pojo.UserDetailsImpl;
 import ru.numbDev.mapitresource.repository.postgres.UserRepository;
 import ru.numbDev.mapitresource.service.apis.CurrentUserService;
+import ru.numbDev.mapitresource.utils.JwtUtils;
 import ru.numbDev.mapitresource.utils.ThrowUtils;
 
+@AllArgsConstructor
 @Service
 public class CurrentUserServiceImpl implements CurrentUserService {
 
     private final UserRepository userRepository;
     private final UserConvertor userConvertor;
-
-    public CurrentUserServiceImpl(UserRepository userRepository, UserConvertor userConvertor) {
-        this.userRepository = userRepository;
-        this.userConvertor = userConvertor;
-    }
+    private final JwtUtils jwtUtils;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public User getProfile() {
@@ -38,31 +41,32 @@ public class CurrentUserServiceImpl implements CurrentUserService {
     @Override
     public String getNickCurrentUser() {
         return (
-                (Jwt) SecurityContextHolder
+                (UserDetailsImpl) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
                         .getPrincipal()
-        ).getSubject();
+        ).getUsername();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public User createUser(User user) throws Exception {
+    public void createUser(User user) throws Exception {
 
         if (userRepository.nickIsExist(user.getNickname())) {
             throw ThrowUtils.throwEx("Nicks is exists", 400);
         }
 
-        var entity = userConvertor.pojoToEntity(user);
-
-        return userConvertor.entityToPojo(userRepository.save(entity));
+        userRepository.save(userConvertor.pojoToEntity(user));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean authUser(Auth auth) {
+    public String authUser(Auth auth) {
+        var authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(auth.nickname(), auth.password())
+        );
 
-        return false;
+        return jwtUtils.generateJwtToken(authentication);
     }
 
     @Override

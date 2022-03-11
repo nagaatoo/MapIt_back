@@ -18,18 +18,22 @@ import java.util.Set;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
+    @SequenceGenerator(name = "user_generator", sequenceName = "user_seq", allocationSize = 1)
     @Column(name = "id", updatable = false, nullable = false, unique=true)
     private Long id;
 
     @Column(name = "nick_name")
     private String nickName;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "sex")
     private Boolean sex;
 
-    @Embedded
-    private FIOEmbeddable fio;
+    @Column(name = "fio")
+    private String fio;
 
     @Column(name = "created")
     private Date created;

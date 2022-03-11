@@ -38,6 +38,7 @@ public class ControllerLogAspect {
             res = jp.proceed();
         } catch (Throwable e) {
             logger.error("Error execution method");
+            e.printStackTrace();
             throw e;
         }
 

@@ -9,9 +9,9 @@ public interface CurrentUserService {
 
     String getNickCurrentUser();
 
-    User createUser(User user) throws Exception;
+    void createUser(User user) throws Exception;
 
-    boolean authUser(Auth auth);
+    String authUser(Auth auth);
 
     void updateUser(User user);
 

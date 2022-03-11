@@ -15,8 +15,8 @@ public class UserController {
 
     private final UserFacade userFacade;
 
-    @GetMapping("/auth")
-    public boolean auth(@RequestBody Auth auth) {
+    @PostMapping("/auth")
+    public String auth(@RequestBody Auth auth) {
         return userFacade.getCurrentUserService().authUser(auth);
     }
 
@@ -26,13 +26,13 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping("/create")
     public void create(@RequestBody User user) throws Exception {
         userFacade.getCurrentUserService().createUser(user);
     }
 
     @PostMapping("/check")
-    public boolean nickIsExis(@RequestBody Nick nick) {
+    public boolean nickIsExists(@RequestBody Nick nick) {
         return userFacade.getCurrentUserService().nickIsExist(nick.getNickName());
     }
 

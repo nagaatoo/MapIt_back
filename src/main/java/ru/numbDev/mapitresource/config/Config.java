@@ -1,36 +1,14 @@
 package ru.numbDev.mapitresource.config;
 
+import liquibase.integration.spring.SpringLiquibase;
+import org.postgresql.ds.PGSimpleDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+
+import javax.sql.DataSource;
 
 @Configuration
-public class Config extends WebSecurityConfigurerAdapter {
-
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeRequests(authz -> authz
-//                        .anyRequest().authenticated())
-//                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
-//    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests(authz -> authz
-                        .anyRequest()
-                        .authenticated()
-                );
-//                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
-    }
-
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/user/auth");
-    }
+public class Config {
 
 }

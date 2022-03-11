@@ -12,17 +12,14 @@ public class User implements Front {
 
     private long id;
     private String nickname;
+    private String password;
     private Boolean sex;
-    private FIO fio;
+    private String fio;
     private Date birthday;
     private Date created;
 
     public boolean isEmpty() {
-        return
-                StringUtils.isBlank(nickname) &&
-                        sex == null &&
-                        (fio == null || fio.isEmpty()) &&
-                        birthday == null;
+        return StringUtils.isBlank(nickname);
     }
 
     @Override

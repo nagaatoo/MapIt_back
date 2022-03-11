@@ -20,8 +20,7 @@ public class ExceptionHandlerApi extends ResponseEntityExceptionHandler {
 
         Map<String, Object> body = new LinkedHashMap<>();
 
-        if (ex instanceof ApiException) {
-            ApiException exception = (ApiException) ex;
+        if (ex instanceof ApiException exception) {
 
             body.put("timestamp", LocalDateTime.now());
             body.put("message", exception.getMessage());
@@ -32,7 +31,7 @@ public class ExceptionHandlerApi extends ResponseEntityExceptionHandler {
             body.put("timestamp", LocalDateTime.now());
             body.put("message", ex.getMessage());
 
-            return new ResponseEntity<>(body, HttpStatus.I_AM_A_TEAPOT);
+            return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }

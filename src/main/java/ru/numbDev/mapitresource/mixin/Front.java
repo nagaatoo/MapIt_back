@@ -1,7 +1,7 @@
 package ru.numbDev.mapitresource.mixin;
 
 /**
- * Интерфейс - миксин для обхектов фронта
+ * Интерфейс - миксин для объектов фронта
  */
 public interface Front {
 

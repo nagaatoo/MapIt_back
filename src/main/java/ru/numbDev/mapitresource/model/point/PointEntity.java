@@ -17,7 +17,8 @@ import java.util.Set;
 public class PointEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "point_generator")
+    @SequenceGenerator(name = "point_generator", sequenceName = "point_seq", allocationSize = 1)
     @Column(name = "id", updatable = false, nullable = false, unique=true)
     private Long id;
 
