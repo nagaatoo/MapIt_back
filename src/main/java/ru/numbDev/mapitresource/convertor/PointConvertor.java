@@ -9,7 +9,11 @@ public class PointConvertor implements Convertor<PointEntity, Point> {
 
     @Override
     public Point entityToPojo(PointEntity entity) {
-        return modelMapper.map(entity, Point.class);
+//        return modelMapper.map(entity, Point.class);
+        return new Point()
+                .setLatitude(entity.getLatitude())
+                .setLongitude(entity.getLongitude())
+                .setComments("foo");
     }
 
     @Override

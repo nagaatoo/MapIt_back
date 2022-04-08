@@ -13,6 +13,6 @@ public interface PointService {
 
     Point loadPoint(long id);
 
-    void uploadPoint(Point point, MultipartFile[] files) throws IOException;
+    void uploadPoint(Point point) throws IOException;
 
 }

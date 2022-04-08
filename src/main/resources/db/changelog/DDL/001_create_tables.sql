@@ -11,7 +11,7 @@ CREATE TABLE users (
                          birthday date
 );
 CREATE SEQUENCE user_seq START 2;
-insert into users (id, fio, nick_name, password, sex) values (1, 'foo', 'test', '$2a$10$m3ObjGjrETTN2A8/OzXc9eAl8HZ4L9p1Zo4FXMYjSu7l5OlPqbgVS', true);
+insert into users (id, fio, nick_name, password, sex) values (1, 'foo', 'admin', '$2a$10$ijT1sp7BekiHaqFTFMntxuzLigUBAabM9WWy/jIvoZsqQRy8ms.ae', true);
 
 CREATE TABLE friends (
                         id bigint PRIMARY KEY,
@@ -31,6 +31,6 @@ CREATE SEQUENCE point_seq START 1;
 CREATE TABLE files (
                        id bigint PRIMARY KEY,
                        file_id varchar(255) UNIQUE NOT NULL,
-                       point bigint REFERENCES point (id)
+                       point_id bigint REFERENCES point (id)
 );
 CREATE SEQUENCE files_seq START 1;

@@ -1,6 +1,7 @@
 package ru.numbDev.mapitresource.model.point;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -32,7 +33,8 @@ public class PointEntity {
     @Fetch(FetchMode.SUBSELECT)
     private Set<FileEntity> files;
 
-    @ManyToOne
-    private UserEntity user;
+//    @ManyToOne
+    @Column(name = "user_id")
+    private Long user;
 
 }

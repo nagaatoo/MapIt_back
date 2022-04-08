@@ -19,13 +19,18 @@ public class PointController {
         this.pointFacade = pointFacade;
     }
 
-    @PostMapping("/upload")
-    public void uploadPoint(@RequestParam("files") MultipartFile[] files, @RequestBody Point point) throws IOException {
-        pointFacade.getPointService().uploadPoint(point, files);
+    @PostMapping(path = "/upload", consumes = {"multipart/form-data"})
+    public void uploadPoint(@ModelAttribute Point point) throws IOException {
+        pointFacade.getPointService().uploadPoint(point);
     }
 
-    @PostMapping
+    @PostMapping(path = "/get/all")
     public Points loadPoints(@RequestBody Filter filter) {
         return pointFacade.getPointService().loadPoints(filter);
+    }
+
+    @PostMapping(path = "/get/{id}")
+    public Point loadPoint(@PathVariable("id") long id) {
+        return pointFacade.getPointService().loadPoint(id);
     }
 }

@@ -41,6 +41,7 @@ public class PointServiceImpl implements PointService {
     private final PointConvertor pointConvertor;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Points loadPoints(Filter filter) {
 
         var nick = currentUserService.getNickCurrentUser();
@@ -78,11 +79,16 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
-    public void uploadPoint(Point point, MultipartFile[] files) throws IOException {
+    @Transactional(rollbackFor = Exception.class)
+    public void uploadPoint(Point point) throws IOException {
 
-        var pointEntity = pointRepository.save(pointConvertor.pojoToEntity(point));
+        if (point.getMultipart() == null || point.getMultipart().length == 0) {
+            throw ThrowUtils.throwEx("Request has a files", 400);
+        }
 
-        for (MultipartFile file : files) {
+        var pointEntity = pointRepository.save(pointConvertor.pojoToEntity(point).setUser(currentUserService.getProfile().getId()));
+
+        for (MultipartFile file : point.getMultipart()) {
 
             var fileMongo = fileMongoRepository.save(new FileMongoEntity().setFile(file.getBytes()));
             var fileEntity = new FileEntity()
